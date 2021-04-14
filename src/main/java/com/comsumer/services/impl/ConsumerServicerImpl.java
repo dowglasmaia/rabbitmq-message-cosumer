@@ -17,11 +17,13 @@ public class ConsumerServicerImpl implements ConsumerServices {
 	private static Logger log = LoggerFactory.getLogger(ConsumerServicerImpl.class);
 	
 	@Override
-	public void action(MessageDTO message) {
+	public void action(MessageDTO message) throws Exception {
+		
+		//throw new Exception("Error");
 		
 		System.out.println(message.getText());
 		
-		log.info(" AÇÃO >>> " + message.getText());
+		//log.info(" AÇÃO >>> " + message.getText());
 	}
 
 }
