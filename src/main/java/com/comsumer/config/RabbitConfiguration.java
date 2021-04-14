@@ -3,8 +3,8 @@ package com.comsumer.config;
 
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.amqp.SimpleRabbitListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,19 +12,24 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitConfiguration {
 
-	@Autowired
-	public MessageConverter jsonConverter;
+	@Bean
+	public MessageConverter jsonMessageConverter() {
+		return new Jackson2JsonMessageConverter();
+	}
+
+
 
 	@Bean
 	public SimpleRabbitListenerContainerFactory factoryContainer(
 			ConnectionFactory connectionFactory,
-			SimpleRabbitListenerContainerFactoryConfigurer factoryConfigurer 
+			SimpleRabbitListenerContainerFactoryConfigurer factoryConfigurer
 			) {
 
 		SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
 		factoryConfigurer.configure(factory, connectionFactory);
-		factory.setMessageConverter(jsonConverter);
-		
+		factory.setMessageConverter( jsonMessageConverter() );
+
 		return factory;
 	}
+	
 }
